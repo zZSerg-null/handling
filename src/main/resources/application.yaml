@@ -1,0 +1,35 @@
+server:
+  port: 8441
+
+grpc:
+  server:
+    port: 9091
+    security:
+      enabled: false
+
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME:data_handler_service}
+
+  datasource:
+    url: jdbc:postgresql://localhost:5436/quest_data
+    driver-class-name: org.postgresql.Driver
+    password: postgres
+    username: postgres
+
+  rabbitmq:
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  jpa:
+#    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+
