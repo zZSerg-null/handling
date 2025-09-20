@@ -1,21 +1,15 @@
+communication:
+  protocol: rabbitmq
+
+dispatching:
+  unknown-request: IGNORING # EXCEPTION / SEND_MESSAGE
+
 server:
   port: 8441
-
-grpc:
-  server:
-    port: 9091
-    security:
-      enabled: false
 
 spring:
   application:
     name: ${SPRING_APPLICATION_NAME:data_handler_service}
-
-  datasource:
-    url: jdbc:postgresql://localhost:5436/quest_data
-    driver-class-name: org.postgresql.Driver
-    password: postgres
-    username: postgres
 
   rabbitmq:
     publisher-confirm-type: correlated
@@ -27,9 +21,21 @@ spring:
     username: guest
     password: guest
 
+  datasource:
+    url: jdbc:postgresql://localhost:5436/quest_data
+    driver-class-name: org.postgresql.Driver
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
   jpa:
-#    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
     hibernate:
       ddl-auto: update
 
+
+#grpc:
+#  server:
+#    port: 9091
+#    security:
+#      enabled: false
 

@@ -1,0 +1,18 @@
+# USER BUTTONS
+user.hello: User: Добро пожаловать в бот!
+user.account: User: Добро пожаловать в бот!
+user.quests: User: Добро пожаловать в бот!
+
+
+# ADMIN BUTTONS
+admin.hello: Admin: Добро пожаловать в бот!
+admin.account: Admin: Добро пожаловать в бот!
+admin.quests: Admin: Добро пожаловать в бот!
+
+# CREATOR BUTTONS
+creator.hello: Creator: Добро пожаловать в бот!
+creator.account: Creator: Добро пожаловать в бот!
+creator.quests: Creator: Добро пожаловать в бот!
+
+
+# PLAYER BUTTONS
