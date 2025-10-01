@@ -13,11 +13,12 @@ public final class LocationRequest extends RequestData {
     private final Double latitude;
 
     @Builder
-    public LocationRequest(Long telegramId, String userName, Double longitude, Double latitude) {
-        super(telegramId, userName);
+    public LocationRequest(Long telegramId, String userName, Integer messageId, Double longitude, Double latitude) {
+        super(telegramId, userName, messageId);
         this.longitude = longitude;
         this.latitude = latitude;
     }
+
 
     @Override
     public RequestType getType() {

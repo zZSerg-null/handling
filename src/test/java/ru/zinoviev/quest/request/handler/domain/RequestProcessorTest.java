@@ -111,7 +111,7 @@ class RequestProcessorTest {
         return CallbackRequest.builder()
                 .telegramId(USERID)
                 .userName(USERNAME)
-                .data("TEST_CALLBACK") // а вот тут заминочка, потому что когда будут реализована обработка колбэков,
+                .callbackData("TEST_CALLBACK") // а вот тут заминочка, потому что когда будут реализована обработка колбэков,
                                        // все неизвестные колбэки для роли:типа - уйдут в мусорку
                 .build();
     }

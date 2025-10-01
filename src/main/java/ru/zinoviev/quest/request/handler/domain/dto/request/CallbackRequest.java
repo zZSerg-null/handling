@@ -9,13 +9,16 @@ import ru.zinoviev.quest.request.handler.domain.enums.RequestType;
 @ToString
 public final class CallbackRequest extends RequestData {
 
-    private final String data;
+    private final String callbackData;
 
     @Builder
-    public CallbackRequest(Long telegramId, String userName, String data) {
-        super(telegramId, userName);
-        this.data = data;
+    public CallbackRequest(Long telegramId, String userName, Integer messageId, String callbackData) {
+        super(telegramId, userName, messageId);
+        this.callbackData = callbackData;
     }
+
+
+
 
     @Override
     public RequestType getType() {

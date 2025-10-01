@@ -13,8 +13,8 @@ public final class MessageRequest extends RequestData {
     private final PayloadObject payloadObject;
 
     @Builder
-    public MessageRequest(Long telegramId, String userName, String text, PayloadObject payloadObject) {
-        super(telegramId, userName);
+    public MessageRequest(Long telegramId, String userName, Integer messageId, String text, PayloadObject payloadObject) {
+        super(telegramId, userName, messageId);
         this.text = text;
         this.payloadObject = payloadObject;
     }

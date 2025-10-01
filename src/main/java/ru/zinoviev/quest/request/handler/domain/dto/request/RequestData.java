@@ -12,6 +12,7 @@ public abstract sealed class RequestData
 
     private final Long telegramId;
     private final String userName;
+    private final Integer messageId;
 
     @Setter
     private String path;

@@ -12,7 +12,6 @@ public class PayloadObject {
 
     private PayloadType payloadType;
     private String caption;
-
     private String fileId;
     private String fileUniqueId;
     private Integer width;

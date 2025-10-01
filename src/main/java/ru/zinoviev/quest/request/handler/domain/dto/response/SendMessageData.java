@@ -3,7 +3,6 @@ package ru.zinoviev.quest.request.handler.domain.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import ru.zinoviev.quest.request.handler.domain.dto.request.PayloadObject;
 
 @Getter
 @ToString
