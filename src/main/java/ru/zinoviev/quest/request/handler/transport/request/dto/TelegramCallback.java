@@ -8,12 +8,12 @@ import lombok.ToString;
 @ToString
 public final class TelegramCallback extends TelegramRequest {
 
-    private final String data;
+    private final String callbackData;
 
     @Builder
-    public TelegramCallback(Long userId, String userName, Integer messageId, String data) {
+    public TelegramCallback(Long userId, String userName, Integer messageId, String callbackData) {
 
         super(userId, userName, messageId);
-        this.data = data;
+        this.callbackData = callbackData;
     }
 }

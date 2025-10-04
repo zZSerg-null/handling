@@ -12,8 +12,8 @@ public final class WebAppRequest extends RequestData {
     private final String webAppData;
 
     @Builder
-    public WebAppRequest(Long telegramId, String userName, String webAppData) {
-        super(telegramId, userName);
+    public WebAppRequest(Long telegramId, String userName, Integer messageId, String webAppData) {
+        super(telegramId, userName, messageId);
         this.webAppData = webAppData;
     }
 

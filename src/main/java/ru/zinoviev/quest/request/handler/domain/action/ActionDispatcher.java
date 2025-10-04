@@ -1,40 +1,75 @@
 package ru.zinoviev.quest.request.handler.domain.action;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.zinoviev.quest.request.handler.domain.DispatchKey;
 import ru.zinoviev.quest.request.handler.domain.dto.request.RequestData;
+import ru.zinoviev.quest.request.handler.domain.dto.response.EditMessageData;
+import ru.zinoviev.quest.request.handler.domain.dto.response.Keyboard;
+import ru.zinoviev.quest.request.handler.domain.dto.response.SendMessageData;
+import ru.zinoviev.quest.request.handler.domain.dto.response.utils.KeyboardRegistry;
 import ru.zinoviev.quest.request.handler.domain.dto.response.ResponseData;
+import ru.zinoviev.quest.request.handler.domain.dto.response.utils.MessageRegistry;
+import ru.zinoviev.quest.request.handler.domain.dto.response.utils.ResponseFactory;
+import ru.zinoviev.quest.request.handler.domain.enums.MenuDefinition;
 import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
 import ru.zinoviev.quest.request.handler.transport.response.ResponsePublisher;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Component
-@RequiredArgsConstructor
 public abstract class ActionDispatcher {
 
-    private final ResponsePublisher publisher;
-    private final PropertiesReader propertiesReader;
 
-    private Map<String, String> buttonsMap;
-    private Map<String, String> messageMap;
+    protected final ResponseFactory responseFactory; // фабрика для создания ответов по типам Send, Delete, Edit
+    private final ResponsePublisher publisher;
+    private final KeyboardRegistry keyboardRegistry;
+    private final MessageRegistry messageRegistry;
+
+    public ActionDispatcher(ResponseFactory responseFactory, ResponsePublisher publisher, KeyboardRegistry keyboardRegistry, MessageRegistry messageRegistry) {
+        this.responseFactory = responseFactory;
+        this.publisher = publisher;
+        this.keyboardRegistry = keyboardRegistry;
+        this.messageRegistry = messageRegistry;
+    }
 
     public abstract void dispatch(RequestData request);
 
     public abstract DispatchKey key();
 
-    public void loadMessagesAndButtons(){
-       messageMap = propertiesReader.readMessagesForRole(getRole());
-       buttonsMap = propertiesReader.readButtonsForRole(getRole());
-    };
-
     public abstract UserRole getRole();
 
-    protected void sendResponse(ResponseData responseData){
+    protected void sendResponse(ResponseData responseData) {
         publisher.sendResponse(responseData);
     }
 
+    protected Keyboard getKeyboard(String name){
+        return Keyboard.builder()
+                .buttons(keyboardRegistry.getKeyboard(name))
+                .keyboardType(keyboardRegistry.getKeyboardType(name))
+                .build();
+    };
+
+    public void back(RequestData requestData) {
+     //   back();
+//        requestData.getPath().
+    }
+
+    protected String getMessage(String messageName) {
+       return messageRegistry.getMessage(messageName);
+    }
+
+    protected ResponseData getDefaultSendMessageResponse(RequestData requestData, MenuDefinition definition){
+        return SendMessageData.builder()
+                .userId(requestData.getTelegramId())
+                .message(definition.getMessage(messageRegistry))
+                .keyboard(definition.getKeyboard(keyboardRegistry))
+                .build();
+    }
+
+    protected ResponseData getDefaultEditMessageResponse(RequestData requestData, MenuDefinition definition){
+        return EditMessageData.builder()
+                .userId(requestData.getTelegramId())
+                .messageId(requestData.getMessageId())
+                .message(definition.getMessage(messageRegistry))
+                .keyboard(definition.getKeyboard(keyboardRegistry))
+                .build();
+    }
 }

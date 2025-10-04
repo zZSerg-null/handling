@@ -15,8 +15,8 @@ public final class PollAnswerRequest extends RequestData {
     private final List<Integer> optionIds;
 
     @Builder
-    public PollAnswerRequest(Long telegramId, String userName, String pollId, List<Integer> optionIds) {
-        super(telegramId, userName);
+    public PollAnswerRequest(Long telegramId, String userName, Integer messageId, String pollId, List<Integer> optionIds) {
+        super(telegramId, userName, messageId);
         this.pollId = pollId;
         this.optionIds = optionIds;
     }

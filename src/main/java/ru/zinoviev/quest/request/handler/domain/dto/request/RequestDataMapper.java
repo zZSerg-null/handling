@@ -38,6 +38,7 @@ public class RequestDataMapper {
         return WebAppRequest.builder()
                 .telegramId(request.getUserId())
                 .userName(request.getUserName())
+                .messageId(request.getMessageId())
                 .webAppData(request.getWebAppData())
                 .build();
     }
@@ -45,8 +46,9 @@ public class RequestDataMapper {
     private RequestData getCallbackTypeRequest(TelegramCallback request) {
         return CallbackRequest.builder()
                 .telegramId(request.getUserId())
+                .messageId(request.getMessageId())
                 .userName(request.getUserName())
-                .data(request.getData())
+                .callbackData(request.getCallbackData())
                 .build();
     }
 
@@ -54,6 +56,7 @@ public class RequestDataMapper {
         return MessageRequest.builder()
                 .telegramId(request.getUserId())
                 .userName(request.getUserName())
+                .messageId(request.getMessageId())
                 .text(request.getText())
                 .payloadObject(request.getFilePayload() != null ?
                         payloadTypeMap
@@ -68,6 +71,7 @@ public class RequestDataMapper {
     private RequestData getLocationTypeRequest(TelegramLocation request) {
         return LocationRequest.builder()
                 .telegramId(request.getUserId())
+                .messageId(request.getMessageId())
                 .userName(request.getUserName())
                 .build();
     }
@@ -75,6 +79,7 @@ public class RequestDataMapper {
     private RequestData getPollTypeRequest(TelegramPoll request) {
         return PollRequest.builder()
                 .telegramId(request.getUserId())
+                .messageId(request.getMessageId())
                 .userName(request.getUserName())
                 .pollId(request.getPollId())
                 .type(request.getType())
@@ -89,6 +94,7 @@ public class RequestDataMapper {
     private RequestData getPollAnswerTypeRequest(TelegramPollAnswer request) {
         return PollAnswerRequest.builder()
                 .telegramId(request.getUserId())
+                .messageId(request.getMessageId())
                 .userName(request.getUserName())
                 .pollId(request.getPollId())
                 .optionIds(request.getOptionIds())

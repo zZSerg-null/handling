@@ -19,7 +19,6 @@ public class DispatcherRegistry {
     public DispatcherRegistry(List<ActionDispatcher> dispatchers, FallbackDispatcher fallback) {
         this.fallback = fallback;
         this.registry = dispatchers.stream()
-                .peek(ActionDispatcher::loadMessagesAndButtons)
                 .collect(
                         Collectors.toMap(
                                 ActionDispatcher::key, disp -> disp

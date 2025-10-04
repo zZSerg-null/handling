@@ -1,41 +1,6 @@
 communication:
   protocol: rabbitmq
 
-dispatching:
-  unknown-request: IGNORING # EXCEPTION / SEND_MESSAGE
-
-server:
-  port: 8441
-
 spring:
-  application:
-    name: ${SPRING_APPLICATION_NAME:data_handler_service}
-
-  rabbitmq:
-    publisher-confirm-type: correlated
-    publisher-returns: true
-    template:
-      mandatory: true
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-
-  datasource:
-    url: jdbc:postgresql://localhost:5436/quest_data
-    driver-class-name: org.postgresql.Driver
-    username: ${POSTGRES_USER:postgres}
-    password: ${POSTGRES_PASSWORD:postgres}
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-
-
-#grpc:
-#  server:
-#    port: 9091
-#    security:
-#      enabled: false
-
+  profiles:
+    active: local

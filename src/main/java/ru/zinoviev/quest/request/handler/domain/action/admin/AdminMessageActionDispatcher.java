@@ -3,10 +3,11 @@ package ru.zinoviev.quest.request.handler.domain.action.admin;
 import org.springframework.stereotype.Component;
 import ru.zinoviev.quest.request.handler.domain.action.ActionDispatcher;
 import ru.zinoviev.quest.request.handler.domain.DispatchKey;
-import ru.zinoviev.quest.request.handler.domain.action.PropertiesReader;
-import ru.zinoviev.quest.request.handler.domain.action.user.UserTextCommand;
 import ru.zinoviev.quest.request.handler.domain.dto.request.MessageRequest;
 import ru.zinoviev.quest.request.handler.domain.dto.request.RequestData;
+import ru.zinoviev.quest.request.handler.domain.dto.response.utils.KeyboardRegistry;
+import ru.zinoviev.quest.request.handler.domain.dto.response.utils.MessageRegistry;
+import ru.zinoviev.quest.request.handler.domain.dto.response.utils.ResponseFactory;
 import ru.zinoviev.quest.request.handler.domain.dto.response.SendMessageData;
 import ru.zinoviev.quest.request.handler.domain.enums.RequestType;
 import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
@@ -15,8 +16,8 @@ import ru.zinoviev.quest.request.handler.transport.response.ResponsePublisher;
 @Component
 public class AdminMessageActionDispatcher extends ActionDispatcher {
 
-    public AdminMessageActionDispatcher(ResponsePublisher publisher, PropertiesReader propertiesReader) {
-        super(publisher, propertiesReader);
+    public AdminMessageActionDispatcher(ResponseFactory responseFactory, ResponsePublisher publisher, KeyboardRegistry keyboardRegistry, MessageRegistry messageRegistry) {
+        super(responseFactory, publisher, keyboardRegistry, messageRegistry);
     }
 
     public void dispatch(RequestData request) {

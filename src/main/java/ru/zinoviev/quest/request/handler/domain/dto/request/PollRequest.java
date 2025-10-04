@@ -20,11 +20,10 @@ public final class PollRequest extends RequestData {
     private final List<String> answers;
     private final List<Integer> correctAnswersId;
 
-    @Builder
-    public PollRequest(Long telegramId, String userName, String pollId, String question, String explanation,
-                       PollType type, Boolean allowMultipleAnswers, List<String> answers, List<Integer> correctAnswersId) {
-        super(telegramId, userName);
 
+    @Builder
+    public PollRequest(Long telegramId, String userName, Integer messageId, String pollId, String question, String explanation, PollType type, Boolean allowMultipleAnswers, List<String> answers, List<Integer> correctAnswersId) {
+        super(telegramId, userName, messageId);
         this.pollId = pollId;
         this.question = question;
         this.explanation = explanation;

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @JsonTypeInfo(
@@ -21,6 +20,6 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public sealed class ResponseData permits SendMessageData, EditMessageData, DeleteMessageData {
 
-    private final Long userId;
+    private final Long chatId;
 
 }

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import ru.zinoviev.quest.request.handler.domain.UserInfo;
+import ru.zinoviev.quest.request.handler.domain.jpa.UserInfo;
 import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
 import ru.zinoviev.quest.request.handler.jpa.entity.QuestUserJPA;
 import ru.zinoviev.quest.request.handler.jpa.repository.UserRepository;

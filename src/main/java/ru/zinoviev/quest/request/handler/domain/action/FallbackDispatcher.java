@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.zinoviev.quest.request.handler.domain.DispatchKey;
 import ru.zinoviev.quest.request.handler.domain.dto.request.RequestData;
+import ru.zinoviev.quest.request.handler.domain.dto.response.utils.KeyboardRegistry;
+import ru.zinoviev.quest.request.handler.domain.dto.response.utils.MessageRegistry;
+import ru.zinoviev.quest.request.handler.domain.dto.response.utils.ResponseFactory;
 import ru.zinoviev.quest.request.handler.domain.dto.response.SendMessageData;
 import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
 import ru.zinoviev.quest.request.handler.transport.protocol.AnsiConsole;
@@ -15,8 +18,8 @@ public class FallbackDispatcher extends ActionDispatcher {
     @Value("${dispatching.unknown-request:IGNORING}")
     private String reactionType;
 
-    public FallbackDispatcher(ResponsePublisher publisher, PropertiesReader propertiesReader) {
-        super(publisher, propertiesReader);
+    public FallbackDispatcher(ResponseFactory responseFactory, ResponsePublisher publisher, KeyboardRegistry keyboardRegistry, MessageRegistry messageRegistry) {
+        super(responseFactory, publisher, keyboardRegistry, messageRegistry);
     }
 
     @Override

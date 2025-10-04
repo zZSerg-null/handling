@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.zinoviev.quest.request.handler.domain.dto.request.RequestData;
 import ru.zinoviev.quest.request.handler.domain.dto.request.RequestDataMapper;
+import ru.zinoviev.quest.request.handler.domain.jpa.UserInfo;
 import ru.zinoviev.quest.request.handler.domain.jpa.service.UserRepositoryService;
 import ru.zinoviev.quest.request.handler.transport.request.dto.TelegramRequest;
 
@@ -24,7 +25,6 @@ public class RequestAdapter {
                 requestData.getUserName()
         );
         requestData.setPath(info.getPath());
-
         processor.process(info.getRole(), requestData.getType(), requestData);
     }
 

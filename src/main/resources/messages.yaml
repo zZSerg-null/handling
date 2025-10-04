@@ -1,0 +1,19 @@
+#"*bold*\n" +
+#"_italic_\n" +
+#"[inline URL](http://www.example.com/)\n" +
+#"`inline fixed-width code` " +"\n";
+
+messages:
+
+# USER MESSAGES
+  user_main_menu: "*Добро пожаловать в квестовый бот!*\n\nЗдесь вы можете создавать и проходить квесты \n"
+  quest_menu: "Создадим ка квестик"
+  account_menu: "Что в моем аккаунте а а а "
+
+
+
+# ADMIN MESSAGES
+
+# CREATOR MESSAGES
+
+# PLAYER MESSAGES
