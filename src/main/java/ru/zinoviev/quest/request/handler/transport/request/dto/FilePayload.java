@@ -9,17 +9,6 @@ import lombok.ToString;
 @ToString
 public class FilePayload {
 
-    private PayloadType payloadType;
-    private String caption;
-
-    private String fileId;
-    private String fileUniqueId;
-    private Integer width;
-    private Integer height;
-    private Integer duration;
-    private Long fileSize;
-    private String fileName;
-    private String mimeType;
-    private Boolean isAnimated;
-    private String filePath;
+    private PayloadType payloadType; // для определения, как потом отправлять файл
+    private String fileId;           // уникальный идентификатор файла в боте
 }
