@@ -73,7 +73,8 @@ public class UserMessageActionDispatcher extends ActionDispatcher {
     }
 
     private void payloadHandling(MessageRequest messageRequest) {
-
+        System.out.println("PAYLOAD");
+        System.out.println(messageRequest.getPayloadObject());
     }
 
     private void sendMainMenu(MessageRequest messageRequest) {
