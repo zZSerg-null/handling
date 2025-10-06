@@ -19,14 +19,14 @@ public class UserRepositoryServiceImpl implements UserRepositoryService {
 
     @Override
     @Transactional
-    @Cacheable(cacheNames = "info", key = "#userId")
-    public UserInfo getOrCreateUserInfo(Long userId, String userName) {
-        var userOptional = getUserByTelegramId(userId);
+    @Cacheable(cacheNames = "info", key = "#telegramId")
+    public UserInfo getOrCreateUserInfo(Long telegramId, String userName) {
+        var userOptional = getUserByTelegramId(telegramId);
 
         UserInfo info;
 
         if (userOptional.isEmpty()){
-            BotUser user = createUser(userId, userName);
+            BotUser user = createUser(telegramId, userName);
             info = UserInfo.builder()
                     .questUserId(user.getId())
                     .path(user.getPath())
@@ -39,9 +39,37 @@ public class UserRepositoryServiceImpl implements UserRepositoryService {
                     .path(user.getPath())
                     .role(user.getUserRole())
                     .build();
+
+            if (!user.getNickname().equals(userName)){
+                actualizeUsername(user, userName);
+            }
         }
 
         return info;
+    }
+
+    @Override
+    @Transactional
+    public void setPath(Long telegramId, String postfix) {
+        var userOptional = getUserByTelegramId(telegramId);
+        if (userOptional.isEmpty()){
+            throw  new IllegalArgumentException("setPath: Пользователь "+telegramId+" не найден");
+        }
+
+        BotUser user = userOptional.get();
+
+        if (postfix.equals("<-")) {
+            user.setPath(user.getPath() + postfix + "/"); // TODO
+        } else {
+            user.setPath(user.getPath() + postfix + "/");
+        }
+
+        userRepository.save(user);
+    }
+
+    private void actualizeUsername(BotUser user, String newName) {
+        user.setNickname(newName);
+        userRepository.save(user);
     }
 
     private BotUser createUser(Long userId, String userName) {

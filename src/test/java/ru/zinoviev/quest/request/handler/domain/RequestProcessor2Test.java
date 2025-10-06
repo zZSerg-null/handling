@@ -1,25 +1,6 @@
 package ru.zinoviev.quest.request.handler.domain;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import ru.zinoviev.quest.request.handler.domain.dto.request.*;
-import ru.zinoviev.quest.request.handler.domain.dto.response.ResponseData;
-import ru.zinoviev.quest.request.handler.domain.enums.RequestType;
-import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
-import ru.zinoviev.quest.request.handler.transport.request.dto.FilePayload;
-import ru.zinoviev.quest.request.handler.transport.request.dto.PayloadType;
-import ru.zinoviev.quest.request.handler.transport.response.ResponsePublisher;
-
-import java.util.Arrays;
-import java.util.Random;
-import java.util.stream.Stream;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 //@SpringBootTest
 class RequestProcessor2Test {

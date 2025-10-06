@@ -10,14 +10,14 @@ public final class EditMessageData extends ResponseData {
 
     private final String message;
     private final Integer messageId;
-    private final Keyboard keyboard;
+    private final ResponseKeyboard responseKeyboard;
 
     @Builder
 
-    public EditMessageData(Long userId, String message, Integer messageId, Keyboard keyboard) {
+    public EditMessageData(Long userId, String message, Integer messageId, ResponseKeyboard responseKeyboard) {
         super(userId);
         this.message = message;
         this.messageId = messageId;
-        this.keyboard = keyboard;
+        this.responseKeyboard = responseKeyboard;
     }
 }

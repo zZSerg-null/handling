@@ -3,7 +3,7 @@ package ru.zinoviev.quest.request.handler.domain.action;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.zinoviev.quest.request.handler.domain.DispatchKey;
-import ru.zinoviev.quest.request.handler.domain.dto.request.RequestData;
+import ru.zinoviev.quest.request.handler.domain.dto.internal.RequestData;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.KeyboardRegistry;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.MessageRegistry;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.ResponseFactory;
@@ -24,7 +24,7 @@ public class FallbackDispatcher extends ActionDispatcher {
 
     @Override
     public void dispatch(RequestData request) {
-        AnsiConsole.println("Сообщение, не имеющее обработчика: " + request, AnsiConsole.BrightColor.CYAN);
+        AnsiConsole.println("Сообщение, не имеющее обработчика для текущей роли: " + request, AnsiConsole.BrightColor.CYAN);
 
         if (reactionType.equalsIgnoreCase("EXCEPTION")){
             throw new UnhandableRequestTypeException("Событие не может быть обработано");

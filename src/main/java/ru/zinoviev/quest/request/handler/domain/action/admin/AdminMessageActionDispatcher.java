@@ -3,8 +3,8 @@ package ru.zinoviev.quest.request.handler.domain.action.admin;
 import org.springframework.stereotype.Component;
 import ru.zinoviev.quest.request.handler.domain.action.ActionDispatcher;
 import ru.zinoviev.quest.request.handler.domain.DispatchKey;
-import ru.zinoviev.quest.request.handler.domain.dto.request.MessageRequest;
-import ru.zinoviev.quest.request.handler.domain.dto.request.RequestData;
+import ru.zinoviev.quest.request.handler.domain.dto.internal.MessageRequest;
+import ru.zinoviev.quest.request.handler.domain.dto.internal.RequestData;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.KeyboardRegistry;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.MessageRegistry;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.ResponseFactory;
@@ -27,13 +27,17 @@ public class AdminMessageActionDispatcher extends ActionDispatcher {
         if (messageRequest.getText().toLowerCase().startsWith(AdminTextCommand.AI_CHAT)) {
             routeMessageToAI(messageRequest);
         } else {
-            //anyMessage(messageRequest);
+            anyMessage(messageRequest);
         }
 //
 //        if (messageRequest.getPayloadObject() != null) {
 //            processPayload(messageRequest);
 //        } else
 //            processText(messageRequest);
+    }
+
+    private void anyMessage(MessageRequest messageRequest) {
+        System.out.println("admin: anyMessage");
     }
 
     private void routeMessageToAI(MessageRequest messageRequest) {

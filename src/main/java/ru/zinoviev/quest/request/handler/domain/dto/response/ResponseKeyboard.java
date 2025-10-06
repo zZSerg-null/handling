@@ -16,9 +16,9 @@ import java.util.List;
 @Getter
 @Builder
 @ToString
-public class Keyboard {
+public class ResponseKeyboard {
 
     private KeyboardType keyboardType;
-    private List<List<KeyboardButton>> buttons;
+    private List<List<ResponseKeyboardButton>> buttons;
 
 }

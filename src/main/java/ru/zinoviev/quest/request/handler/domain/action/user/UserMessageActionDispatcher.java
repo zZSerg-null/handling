@@ -3,8 +3,8 @@ package ru.zinoviev.quest.request.handler.domain.action.user;
 import org.springframework.stereotype.Component;
 import ru.zinoviev.quest.request.handler.domain.DispatchKey;
 import ru.zinoviev.quest.request.handler.domain.action.ActionDispatcher;
-import ru.zinoviev.quest.request.handler.domain.dto.request.MessageRequest;
-import ru.zinoviev.quest.request.handler.domain.dto.request.RequestData;
+import ru.zinoviev.quest.request.handler.domain.dto.internal.MessageRequest;
+import ru.zinoviev.quest.request.handler.domain.dto.internal.RequestData;
 import ru.zinoviev.quest.request.handler.domain.dto.response.SendMessageData;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.KeyboardRegistry;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.MessageRegistry;
@@ -16,9 +16,6 @@ import ru.zinoviev.quest.request.handler.transport.response.ResponsePublisher;
 
 @Component
 public class UserMessageActionDispatcher extends ActionDispatcher {
-
-    private final static String USER_MAIN_MENU = "user_main_menu";
-    private final static String ACCOUNT_MENU = "account_menu";
 
     public UserMessageActionDispatcher(ResponseFactory responseFactory, ResponsePublisher publisher, KeyboardRegistry keyboardRegistry, MessageRegistry messageRegistry) {
         super(responseFactory, publisher, keyboardRegistry, messageRegistry);
@@ -68,7 +65,6 @@ public class UserMessageActionDispatcher extends ActionDispatcher {
     }
 
     private void sendHello(MessageRequest messageRequest) {
-
         sendResponse(getDefaultSendMessageResponse(messageRequest, MenuDefinition.USER_MAIN_MENU));
     }
 
