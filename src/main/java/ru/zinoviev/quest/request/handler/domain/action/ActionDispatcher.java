@@ -2,9 +2,9 @@ package ru.zinoviev.quest.request.handler.domain.action;
 
 import org.springframework.stereotype.Component;
 import ru.zinoviev.quest.request.handler.domain.DispatchKey;
-import ru.zinoviev.quest.request.handler.domain.dto.request.RequestData;
+import ru.zinoviev.quest.request.handler.domain.dto.internal.RequestData;
 import ru.zinoviev.quest.request.handler.domain.dto.response.EditMessageData;
-import ru.zinoviev.quest.request.handler.domain.dto.response.Keyboard;
+import ru.zinoviev.quest.request.handler.domain.dto.response.ResponseKeyboard;
 import ru.zinoviev.quest.request.handler.domain.dto.response.SendMessageData;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.KeyboardRegistry;
 import ru.zinoviev.quest.request.handler.domain.dto.response.ResponseData;
@@ -18,8 +18,9 @@ import ru.zinoviev.quest.request.handler.transport.response.ResponsePublisher;
 public abstract class ActionDispatcher {
 
 
-    protected final ResponseFactory responseFactory; // фабрика для создания ответов по типам Send, Delete, Edit
+    protected final ResponseFactory responseFactory;
     private final ResponsePublisher publisher;
+
     private final KeyboardRegistry keyboardRegistry;
     private final MessageRegistry messageRegistry;
 
@@ -40,8 +41,8 @@ public abstract class ActionDispatcher {
         publisher.sendResponse(responseData);
     }
 
-    protected Keyboard getKeyboard(String name){
-        return Keyboard.builder()
+    protected ResponseKeyboard getKeyboard(String name){
+        return ResponseKeyboard.builder()
                 .buttons(keyboardRegistry.getKeyboard(name))
                 .keyboardType(keyboardRegistry.getKeyboardType(name))
                 .build();
@@ -60,7 +61,7 @@ public abstract class ActionDispatcher {
         return SendMessageData.builder()
                 .userId(requestData.getTelegramId())
                 .message(definition.getMessage(messageRegistry))
-                .keyboard(definition.getKeyboard(keyboardRegistry))
+                .responseKeyboard(definition.getKeyboard(keyboardRegistry))
                 .build();
     }
 
@@ -69,7 +70,11 @@ public abstract class ActionDispatcher {
                 .userId(requestData.getTelegramId())
                 .messageId(requestData.getMessageId())
                 .message(definition.getMessage(messageRegistry))
-                .keyboard(definition.getKeyboard(keyboardRegistry))
+                .responseKeyboard(definition.getKeyboard(keyboardRegistry))
                 .build();
+    }
+
+    public void ignore(RequestData requestData) {
+        System.out.println("Ignored: "+requestData);
     }
 }

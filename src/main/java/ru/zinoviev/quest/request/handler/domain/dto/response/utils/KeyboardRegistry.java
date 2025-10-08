@@ -3,7 +3,7 @@ package ru.zinoviev.quest.request.handler.domain.dto.response.utils;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
-import ru.zinoviev.quest.request.handler.domain.dto.response.KeyboardButton;
+import ru.zinoviev.quest.request.handler.domain.dto.response.ResponseKeyboardButton;
 import ru.zinoviev.quest.request.handler.domain.dto.response.KeyboardType;
 import ru.zinoviev.quest.request.handler.domain.enums.CallbackNames;
 
@@ -44,7 +44,7 @@ public class KeyboardRegistry {
         }
     }
 
-    public List<List<KeyboardButton>> getKeyboard(String name) {
+    public List<List<ResponseKeyboardButton>> getKeyboard(String name) {
         KeyboardConfig config = keyboards.get(name);
         if (config == null) {
             throw new IllegalArgumentException("Клавиатура '" + name + "' не найдена");
@@ -69,26 +69,24 @@ public class KeyboardRegistry {
             KeyboardType type = KeyboardType.valueOf(typeStr);
 
             // Получаем строки с кнопками
-            List<List<String>> rowsData = (List<List<String>>) keyboardData.get("rows");
-            List<List<KeyboardButton>> buttons = new ArrayList<>();
+            List<List<Map<String, String>>> rowsData = (List<List<Map<String, String>>>) keyboardData.get("rows");
+            List<List<ResponseKeyboardButton>> buttons = new ArrayList<>();
 
-            for (List<String> rowData : rowsData) {
-                List<KeyboardButton> rowButtons = new ArrayList<>();
+            for (List<Map<String, String>> rowData : rowsData) {
+                List<ResponseKeyboardButton> rowButtons = new ArrayList<>();
 
-                if (type == KeyboardType.INLINE) {
-                    // Для INLINE клавиатур: пары [текст, callbackType]
-                    for (int i = 0; i < rowData.size(); i += 2) {
-                        String text = rowData.get(i);
-                        String callbackTypeStr = rowData.get(i + 1);
-                        CallbackNames callbackNames = CallbackNames.valueOf(callbackTypeStr);
-                        rowButtons.add(new KeyboardButton(text, callbackNames.getCallbackData()));
+                for (Map<String, String> buttonData : rowData) {
+                    String text = buttonData.get("text");
+                    String callbackStr = buttonData.get("callback");
+                    String webAppUrl = buttonData.get("webAppUrl");
+
+                    String callbackData = null;
+                    if (callbackStr != null) {
+                        CallbackNames callbackNames = CallbackNames.valueOf(callbackStr);
+                        callbackData = callbackNames.getCallbackData();
                     }
 
-                    // Для REPLY клавиатур: только текст, callbackType = null
-                } else {
-                    for (String text : rowData) {
-                        rowButtons.add(new KeyboardButton(text, null));
-                    }
+                    rowButtons.add(new ResponseKeyboardButton(text, callbackData, webAppUrl));
                 }
 
                 buttons.add(rowButtons);
@@ -106,7 +104,6 @@ public class KeyboardRegistry {
     private static class KeyboardConfig {
         private final String name;
         private final KeyboardType type;
-        private final List<List<KeyboardButton>> buttons;
+        private final List<List<ResponseKeyboardButton>> buttons;
     }
-
 }

@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.lang.Nullable;
 
 /**
  * класс обертка для кнопок клавиатур Может иметь и не иметь колбэков в зависимости
@@ -14,10 +13,10 @@ import org.springframework.lang.Nullable;
 @Setter
 @RequiredArgsConstructor
 @ToString
-public class KeyboardButton {
+public class ResponseKeyboardButton {
 
     private final String name;
     private final String callbackData;
-    private String webAppUrl;
+    private final String webAppUrl;
 
 }

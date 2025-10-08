@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import ru.zinoviev.quest.request.handler.domain.action.ActionDispatcher;
 import ru.zinoviev.quest.request.handler.domain.action.FallbackDispatcher;
-import ru.zinoviev.quest.request.handler.domain.dto.request.*;
+import ru.zinoviev.quest.request.handler.domain.dto.internal.*;
 import ru.zinoviev.quest.request.handler.domain.dto.response.ResponseData;
 import ru.zinoviev.quest.request.handler.domain.enums.RequestType;
 import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
@@ -28,8 +28,8 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class RequestProcessorTest {
 
-    @Autowired
-    private RequestProcessor requestProcessor;
+   // @Autowired
+   // private RequestProcessor requestProcessor;
 
     @Autowired
     private DispatcherRegistry registry;
@@ -48,9 +48,8 @@ class RequestProcessorTest {
     @ParameterizedTest
     @MethodSource("dispatchKeyStream")
     public void testCases(UserRole role, RequestType type, RequestData data) {
-        requestProcessor.process(role, type, data);
-
         ActionDispatcher dispatcher = registry.get(role, type);
+        dispatcher.dispatch(data);
 
         if (dispatcher instanceof FallbackDispatcher) {
             verify(publisherMock, after(500).never())

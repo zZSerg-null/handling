@@ -15,12 +15,13 @@ public enum CallbackNames {
      * USER
      */
     QUEST_MENU,
-    CREATE_NEW_QUEST, //go webApp
+    CREATE_QUEST,
     START_QUEST,
     QUEST_LIST,
     RUNNING,
     ACCOUNT,
     MY_STATISTIC,
+    WEBAPP, //go webApp, no callback handling
 
 
 

@@ -4,9 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import ru.zinoviev.quest.request.handler.domain.RequestAdapter;
-import ru.zinoviev.quest.request.handler.transport.request.dto.TelegramLocation;
-import ru.zinoviev.quest.request.handler.transport.request.dto.TelegramMessage;
-import ru.zinoviev.quest.request.handler.transport.request.dto.TelegramPoll;
 import ru.zinoviev.quest.request.handler.transport.request.dto.TelegramRequest;
 
 @Component
@@ -18,7 +15,7 @@ public class RabbitMqListener {
     @RabbitListener(queues = RabbitConfig.REQUEST_QUEUE)
     public void processRequest(TelegramRequest request) {
         AnsiConsole.println("⏬ получен запрос: " + request, AnsiConsole.BrightColor.BLUE);
-        adapter.adaptRequest(request);
+        adapter.adaptAndProcessRequest(request);
     }
 
 

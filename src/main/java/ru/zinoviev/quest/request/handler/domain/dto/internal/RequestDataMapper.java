@@ -1,4 +1,4 @@
-package ru.zinoviev.quest.request.handler.domain.dto.request;
+package ru.zinoviev.quest.request.handler.domain.dto.internal;
 
 import org.springframework.stereotype.Component;
 import ru.zinoviev.quest.request.handler.transport.request.dto.*;

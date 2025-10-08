@@ -2,31 +2,36 @@ package ru.zinoviev.quest.request.handler.domain;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.zinoviev.quest.request.handler.domain.dto.request.RequestData;
-import ru.zinoviev.quest.request.handler.domain.dto.request.RequestDataMapper;
+import ru.zinoviev.quest.request.handler.domain.action.ActionDispatcher;
+import ru.zinoviev.quest.request.handler.domain.dto.internal.RequestData;
+import ru.zinoviev.quest.request.handler.domain.dto.internal.RequestDataMapper;
 import ru.zinoviev.quest.request.handler.domain.jpa.UserInfo;
 import ru.zinoviev.quest.request.handler.domain.jpa.service.UserRepositoryService;
 import ru.zinoviev.quest.request.handler.transport.request.dto.TelegramRequest;
 
+
+/**
+ * Класс предназначенный для маппинга входящих запросов, поиска информации в базе данных
+ * и передаче внутреннего ДТО непосредственно на обработку
+ */
 @Component
 @RequiredArgsConstructor
 public class RequestAdapter {
 
     private final UserRepositoryService service;
     private final RequestDataMapper mapper;
-    private final RequestProcessor processor;
+    private final DispatcherRegistry registry;
 
-    public void adaptRequest(TelegramRequest telegramRequest) {
-        System.out.println("RequestAdapter: " + telegramRequest);
+    public void adaptAndProcessRequest(TelegramRequest telegramRequest) {
+        UserInfo info = service.getOrCreateUserInfo(
+                telegramRequest.getUserId(), telegramRequest.getUserName()
+        );
 
         RequestData requestData = mapper.toRequestData(telegramRequest);
-        UserInfo info = service.getOrCreateUserInfo(
-                requestData.getTelegramId(),
-                requestData.getUserName()
-        );
         requestData.setPath(info.getPath());
-        processor.process(info.getRole(), requestData.getType(), requestData);
-    }
 
+        registry.get(info.getRole(), requestData.getType())
+                .dispatch(requestData);
+    }
 
 }

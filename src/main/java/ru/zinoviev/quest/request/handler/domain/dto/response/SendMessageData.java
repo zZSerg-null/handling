@@ -9,14 +9,14 @@ import lombok.ToString;
 public final class SendMessageData extends ResponseData {
 
     private final String message;
-    private final Keyboard keyboard;
+    private final ResponseKeyboard responseKeyboard;
     private final PayloadResponse payloadResponse;
 
     @Builder
-    public SendMessageData(Long userId, String message, Keyboard keyboard, PayloadResponse payloadResponse) {
+    public SendMessageData(Long userId, String message, ResponseKeyboard responseKeyboard, PayloadResponse payloadResponse) {
         super(userId);
         this.message = message;
-        this.keyboard = keyboard;
+        this.responseKeyboard = responseKeyboard;
         this.payloadResponse = payloadResponse;
     }
 }
