@@ -1,29 +1,29 @@
 package ru.zinoviev.quest.request.handler.domain.action.creator;
 
 import org.springframework.stereotype.Component;
-import ru.zinoviev.quest.request.handler.domain.action.ActionDispatcher;
 import ru.zinoviev.quest.request.handler.domain.DispatchKey;
+import ru.zinoviev.quest.request.handler.domain.action.ActionDispatcher;
 import ru.zinoviev.quest.request.handler.domain.dto.internal.MessageRequest;
 import ru.zinoviev.quest.request.handler.domain.dto.internal.PollRequest;
 import ru.zinoviev.quest.request.handler.domain.dto.internal.RequestData;
+import ru.zinoviev.quest.request.handler.domain.dto.response.SendMessageData;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.KeyboardRegistry;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.MessageRegistry;
-import ru.zinoviev.quest.request.handler.domain.dto.response.utils.ResponseFactory;
-import ru.zinoviev.quest.request.handler.domain.dto.response.SendMessageData;
 import ru.zinoviev.quest.request.handler.domain.enums.RequestType;
 import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
+import ru.zinoviev.quest.request.handler.transport.protocol.AnsiConsole;
 import ru.zinoviev.quest.request.handler.transport.response.ResponsePublisher;
 
 @Component
 public class CreatorPollActionDispatcher extends ActionDispatcher {
 
-    public CreatorPollActionDispatcher(ResponseFactory responseFactory, ResponsePublisher publisher, KeyboardRegistry keyboardRegistry, MessageRegistry messageRegistry) {
-        super(responseFactory, publisher, keyboardRegistry, messageRegistry);
+    public CreatorPollActionDispatcher(ResponsePublisher publisher, KeyboardRegistry keyboardRegistry, MessageRegistry messageRegistry) {
+        super(publisher, keyboardRegistry, messageRegistry);
     }
 
     public void dispatch(RequestData request) {
         PollRequest pollRequest = (PollRequest) request;
-        System.out.println("CreatorPollActionDispatcher");
+        System.out.println(AnsiConsole.colorize("CreatorPollActionDispatcher", AnsiConsole.BrightColor.YELLOW));
 
         sendResponse(SendMessageData.builder().build());
     }

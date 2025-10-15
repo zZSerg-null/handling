@@ -6,7 +6,6 @@ import lombok.ToString;
 import ru.zinoviev.quest.request.handler.domain.enums.RequestType;
 
 @Getter
-@ToString
 public final class CallbackRequest extends RequestData {
 
     private final String callbackData;
@@ -17,12 +16,16 @@ public final class CallbackRequest extends RequestData {
         this.callbackData = callbackData;
     }
 
-
-
-
     @Override
     public RequestType getType() {
         return RequestType.CALLBACK;
     }
 
+    @Override
+    public String toString() {
+        return "CallbackRequest{" +
+                "callbackData='" + callbackData + '\'' +
+                "super: "+ super.toString()+
+                '}';
+    }
 }

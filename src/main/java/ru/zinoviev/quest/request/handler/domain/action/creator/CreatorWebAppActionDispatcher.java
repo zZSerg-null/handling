@@ -9,21 +9,21 @@ import ru.zinoviev.quest.request.handler.domain.dto.internal.WebAppRequest;
 import ru.zinoviev.quest.request.handler.domain.dto.response.SendMessageData;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.KeyboardRegistry;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.MessageRegistry;
-import ru.zinoviev.quest.request.handler.domain.dto.response.utils.ResponseFactory;
 import ru.zinoviev.quest.request.handler.domain.enums.RequestType;
 import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
+import ru.zinoviev.quest.request.handler.transport.protocol.AnsiConsole;
 import ru.zinoviev.quest.request.handler.transport.response.ResponsePublisher;
 
 @Component
 public class CreatorWebAppActionDispatcher extends ActionDispatcher {
 
-    public CreatorWebAppActionDispatcher(ResponseFactory responseFactory, ResponsePublisher publisher, KeyboardRegistry keyboardRegistry, MessageRegistry messageRegistry) {
-        super(responseFactory, publisher, keyboardRegistry, messageRegistry);
+    public CreatorWebAppActionDispatcher(ResponsePublisher publisher, KeyboardRegistry keyboardRegistry, MessageRegistry messageRegistry) {
+        super(publisher, keyboardRegistry, messageRegistry);
     }
 
     public void dispatch(RequestData request) {
         WebAppRequest messageRequest = (WebAppRequest) request;
-        System.out.println("CreatorWebAppActionDispatcher");
+        System.out.println(AnsiConsole.colorize("CreatorWebAppActionDispatcher", AnsiConsole.BrightColor.YELLOW));
 
         sendResponse(SendMessageData.builder().build());
     }

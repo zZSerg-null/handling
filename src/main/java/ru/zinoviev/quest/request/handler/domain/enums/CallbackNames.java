@@ -14,24 +14,32 @@ public enum CallbackNames {
     /**
      * USER
      */
-    QUEST_MENU,
-    CREATE_QUEST,
-    START_QUEST,
-    QUEST_LIST,
-    RUNNING,
-    ACCOUNT,
-    MY_STATISTIC,
-    WEBAPP, //go webApp, no callback handling
+    QUEST_MENU("main_menu"),
+    CREATE_NEW_QUEST("create_quest"),
+    START_CREATION("start_quest_creation"),
+    START_QUEST("start_quest"),
+    QUEST_LIST("quest_list"),
+    USER_QUEST("user_quest"),
+    RUNNING("running_list"),
+    ACCOUNT("account"),
+    MY_STATISTIC("my_stat"),
+    WEBAPP("run_web_app"),
 
 
 
     /**
      * ADMIN
      */
-    ADMIN_USERS,
-    ADMIN_MANAGEMENT,
-    ADMIN_BANLIST,
-    ADMIN_CONFIGLIST,
+    ADMIN_USERS("admin_users"),
+    ADMIN_MANAGEMENT("admin_management"),
+    ADMIN_BANLIST("admin_banlist"),
+    ADMIN_CONFIGLIST("admin_configlist"),
+
+
+
+
+
+
 
 
     /**
@@ -49,13 +57,17 @@ public enum CallbackNames {
     /**
      * ALL ROLES
      */
-    BACK;
+    SEPARATOR(":"),
+    BACK("step_back");
+
+    private final String data;
+
+    CallbackNames(String data) {
+        this.data = data;
+    }
 
     public String getCallbackData() {
-        return name().toLowerCase();
+        return data;
     }
 
-    public static CallbackNames fromString(String data) {
-        return valueOf(data.toUpperCase());
-    }
 }

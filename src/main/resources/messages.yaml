@@ -30,9 +30,17 @@ messages:
 
 # USER MESSAGES
   user_main_menu: "*Добро пожаловать в квестовый бот!*\n\nЗдесь вы можете создавать и проходить квесты \n"
-  quest_menu: "Создадим ка квестик"
-  account_menu: "Что в моем аккаунте а а а"
-  create_quest: "Создадим ка квестик"
+  quest_menu: "Меню квестов в котором вы можете тыкать кнопочки"
+  create_new_quest: "Создадим ка квестик!"
+  start_creation: "Создадим ка квестик!"
+  start_creation_edit: "Создадим ка квестикeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee!"
+  quest_list_empty: "У вас пока нет ни одного квеста"
+  quest_list: "Вот список ваших квестов!"
+  running_list_empty: "Ни одного квеста не запущено"
+  running_list: "Вот список запущенных квестов!"
+  run_list: "Выберите квест, который хотите запустить"
+  run_selected: "Запустить этот квест?"
+  account_menu: "Что в моем аккаунте а? а? а?"
 
 
 # ADMIN MESSAGES

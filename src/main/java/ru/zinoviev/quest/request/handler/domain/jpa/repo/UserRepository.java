@@ -4,11 +4,13 @@ import org.hibernate.annotations.Parameter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
 import ru.zinoviev.quest.request.handler.domain.jpa.BotUser;
 
 import java.util.Optional;
 
+@Repository
 public interface UserRepository extends JpaRepository<BotUser, Long> {
 
     @Query("select bu.userRole from BotUser bu where bu.telegramId = :telegramId")

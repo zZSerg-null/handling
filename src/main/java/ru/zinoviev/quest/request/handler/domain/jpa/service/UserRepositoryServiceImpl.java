@@ -1,12 +1,17 @@
 package ru.zinoviev.quest.request.handler.domain.jpa.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
-import ru.zinoviev.quest.request.handler.domain.jpa.UserInfo;
+import org.springframework.transaction.support.TransactionTemplate;
 import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
 import ru.zinoviev.quest.request.handler.domain.jpa.BotUser;
+import ru.zinoviev.quest.request.handler.domain.jpa.UserInfo;
 import ru.zinoviev.quest.request.handler.domain.jpa.repo.UserRepository;
 
 import java.util.Optional;
@@ -16,50 +21,48 @@ import java.util.Optional;
 public class UserRepositoryServiceImpl implements UserRepositoryService {
 
     private final UserRepository userRepository;
+    private final CacheManager cacheManager;
+    private final PlatformTransactionManager transactionManager;
+
 
     @Override
-    @Transactional
-    @Cacheable(cacheNames = "info", key = "#telegramId")
     public UserInfo getOrCreateUserInfo(Long telegramId, String userName) {
-        var userOptional = getUserByTelegramId(telegramId);
+        Cache cache = cacheManager.getCache("info");
+        UserInfo cacheInfo = cache.get(telegramId, UserInfo.class);
 
-        UserInfo info;
-
-        if (userOptional.isEmpty()){
-            BotUser user = createUser(telegramId, userName);
-            info = UserInfo.builder()
-                    .questUserId(user.getId())
-                    .path(user.getPath())
-                    .role(user.getUserRole())
-                    .build();
-        } else {
-            BotUser user = userOptional.get();
-            info = UserInfo.builder()
-                    .questUserId(user.getId())
-                    .path(user.getPath())
-                    .role(user.getUserRole())
-                    .build();
-
-            if (!user.getNickname().equals(userName)){
-                actualizeUsername(user, userName);
-            }
+        //noinspection ConstantConditions
+        if (cacheInfo != null) {
+            return cacheInfo;
         }
 
+        UserInfo info = new TransactionTemplate(transactionManager).execute(status -> {
+            Optional<BotUser> userOpt = userRepository.findBotUserByTelegramId(telegramId);
+
+            if (userOpt.isPresent()) {
+                BotUser user = userOpt.get();
+
+                if (!user.getNickname().equals(userName)) {
+                    user.setNickname(userName);
+                }
+                return buildUserInfo(user);
+            }
+
+            BotUser newUser = createUser(telegramId, userName);
+            return buildUserInfo(newUser);
+        });
+
+        cache.put(telegramId, info);
         return info;
     }
 
     @Override
     @Transactional
-    public void setPath(Long telegramId, String postfix) {
-        var userOptional = getUserByTelegramId(telegramId);
-        if (userOptional.isEmpty()){
-            throw  new IllegalArgumentException("setPath: Пользователь "+telegramId+" не найден");
-        }
-
-        BotUser user = userOptional.get();
+    // TODO метод не верно написан (пока не используется)
+    public void setPath(Long userId, String postfix) {
+        BotUser user = getUserById(userId);
 
         if (postfix.equals("<-")) {
-            user.setPath(user.getPath() + postfix + "/"); // TODO
+            user.setPath(user.getPath() + postfix + "/");
         } else {
             user.setPath(user.getPath() + postfix + "/");
         }
@@ -67,9 +70,25 @@ public class UserRepositoryServiceImpl implements UserRepositoryService {
         userRepository.save(user);
     }
 
-    private void actualizeUsername(BotUser user, String newName) {
-        user.setNickname(newName);
-        userRepository.save(user);
+
+
+    @Override
+    @Transactional
+    public void setRole(Long userId, UserRole newRole) {
+        BotUser user = getUserById(userId);
+        user.setUserRole(newRole);
+
+        Cache cache = cacheManager.getCache("info");
+        cache.evict(user.getTelegramId());
+        cache.put(user.getTelegramId(), buildUserInfo(user));
+    }
+
+    private UserInfo buildUserInfo(BotUser user) {
+        return UserInfo.builder()
+                .questUserId(user.getId())
+                .path(user.getPath())
+                .role(user.getUserRole())
+                .build();
     }
 
     private BotUser createUser(Long userId, String userName) {
@@ -83,7 +102,9 @@ public class UserRepositoryServiceImpl implements UserRepositoryService {
         );
     }
 
-    private Optional<BotUser> getUserByTelegramId(Long telegramId){
-        return userRepository.findBotUserByTelegramId(telegramId);
+    private BotUser getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("setPath: Пользователь " + userId + " не найден"));
     }
+
 }
