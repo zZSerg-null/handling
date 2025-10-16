@@ -6,16 +6,13 @@ import jakarta.persistence.Id;
 import lombok.*;
 import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
 
-@Builder
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserInfo {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
     private Long questUserId;
     private UserRole role;
     private String path;

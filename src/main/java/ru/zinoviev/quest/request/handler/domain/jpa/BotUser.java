@@ -10,6 +10,7 @@ import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class BotUser {
 
     @Id

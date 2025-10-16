@@ -1,6 +1,7 @@
 package ru.zinoviev.quest.request.handler.domain;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import ru.zinoviev.quest.request.handler.domain.action.ActionDispatcher;
 import ru.zinoviev.quest.request.handler.domain.dto.internal.RequestData;
@@ -29,9 +30,12 @@ public class RequestAdapter {
 
         RequestData requestData = mapper.toRequestData(telegramRequest);
         requestData.setPath(info.getPath());
+        requestData.setRole(info.getRole());
+        requestData.setUserId(info.getQuestUserId());
 
         registry.get(info.getRole(), requestData.getType())
                 .dispatch(requestData);
     }
+
 
 }

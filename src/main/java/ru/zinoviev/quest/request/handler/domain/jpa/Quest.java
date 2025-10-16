@@ -18,6 +18,11 @@ public class Quest {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "bot_user_id")
+    @ToString.Exclude
+    private BotUser botUser;
+
     @Column(length = 100)
     private String name;
 

@@ -17,9 +17,11 @@ public class QuestNode {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quest_id", nullable = false)
+    @ToString.Exclude
     private Quest quest;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "next_node_id")
+    @ToString.Exclude
     private QuestNode nextNode;
 }

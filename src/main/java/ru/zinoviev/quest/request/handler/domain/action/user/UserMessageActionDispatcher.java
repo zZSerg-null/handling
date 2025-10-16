@@ -8,22 +8,22 @@ import ru.zinoviev.quest.request.handler.domain.dto.internal.RequestData;
 import ru.zinoviev.quest.request.handler.domain.dto.response.SendMessageData;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.KeyboardRegistry;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.MessageRegistry;
-import ru.zinoviev.quest.request.handler.domain.dto.response.utils.ResponseFactory;
-import ru.zinoviev.quest.request.handler.domain.enums.MenuDefinition;
+import ru.zinoviev.quest.request.handler.domain.enums.MessageDefinition;
 import ru.zinoviev.quest.request.handler.domain.enums.RequestType;
 import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
+import ru.zinoviev.quest.request.handler.transport.protocol.AnsiConsole;
 import ru.zinoviev.quest.request.handler.transport.response.ResponsePublisher;
 
 @Component
 public class UserMessageActionDispatcher extends ActionDispatcher {
 
-    public UserMessageActionDispatcher(ResponseFactory responseFactory, ResponsePublisher publisher, KeyboardRegistry keyboardRegistry, MessageRegistry messageRegistry) {
-        super(responseFactory, publisher, keyboardRegistry, messageRegistry);
+    public UserMessageActionDispatcher(ResponsePublisher publisher, KeyboardRegistry keyboardRegistry, MessageRegistry messageRegistry) {
+        super(publisher, keyboardRegistry, messageRegistry);
     }
 
     public void dispatch(RequestData request) {
         MessageRequest messageRequest = (MessageRequest) request;
-        System.out.println("UserMessageActionDispatcher");
+        System.out.println(AnsiConsole.colorize("UserMessageActionDispatcher", AnsiConsole.BrightColor.YELLOW));
 
         if (messageRequest.getText() != null) {
             textHandling(messageRequest);
@@ -61,11 +61,11 @@ public class UserMessageActionDispatcher extends ActionDispatcher {
                 "[inline URL](http://www.example.com/)\n" +
                 "`inline fixed-width code` " + "\n";
 
-        sendResponse(getDefaultSendMessageResponse(messageRequest, MenuDefinition.USER_MAIN_MENU));
+        sendResponse(getSendMessageResponse(messageRequest, MessageDefinition.USER_MAIN_MENU));
     }
 
     private void sendHello(MessageRequest messageRequest) {
-        sendResponse(getDefaultSendMessageResponse(messageRequest, MenuDefinition.USER_MAIN_MENU));
+        sendResponse(getSendMessageResponse(messageRequest, MessageDefinition.USER_MAIN_MENU));
     }
 
     private void payloadHandling(MessageRequest messageRequest) {

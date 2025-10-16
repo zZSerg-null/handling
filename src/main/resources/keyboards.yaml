@@ -41,7 +41,7 @@ keyboards:
     type: "INLINE"
     rows:
       - - text: "📋 Создать квест"
-          callback: CREATE_QUEST
+          callback: CREATE_NEW_QUEST
       - - text: "👤 Список квестов"
           callback: QUEST_LIST
       - - text: "👤 Запущенные"
@@ -62,10 +62,16 @@ keyboards:
 
 
 
+  create_new_quest:
+    type: "INLINE"
+    rows:
+      - - text: "Начать создание"
+          callback: START_CREATION
+        - text: "🔙 Назад"
+          callback: BACK
 
 
-
-  create_quest:
+  start_creation:
     type: "REPLY_ADD"
     rows:
       - - text: "📋 Создать квест"

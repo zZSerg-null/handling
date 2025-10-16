@@ -13,7 +13,6 @@ public final class EditMessageData extends ResponseData {
     private final ResponseKeyboard responseKeyboard;
 
     @Builder
-
     public EditMessageData(Long userId, String message, Integer messageId, ResponseKeyboard responseKeyboard) {
         super(userId);
         this.message = message;

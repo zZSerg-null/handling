@@ -2,30 +2,26 @@ package ru.zinoviev.quest.request.handler.domain.action;
 
 import org.springframework.stereotype.Component;
 import ru.zinoviev.quest.request.handler.domain.DispatchKey;
+import ru.zinoviev.quest.request.handler.domain.dto.internal.CallbackRequest;
 import ru.zinoviev.quest.request.handler.domain.dto.internal.RequestData;
-import ru.zinoviev.quest.request.handler.domain.dto.response.EditMessageData;
-import ru.zinoviev.quest.request.handler.domain.dto.response.ResponseKeyboard;
-import ru.zinoviev.quest.request.handler.domain.dto.response.SendMessageData;
+import ru.zinoviev.quest.request.handler.domain.dto.response.*;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.KeyboardRegistry;
-import ru.zinoviev.quest.request.handler.domain.dto.response.ResponseData;
 import ru.zinoviev.quest.request.handler.domain.dto.response.utils.MessageRegistry;
-import ru.zinoviev.quest.request.handler.domain.dto.response.utils.ResponseFactory;
-import ru.zinoviev.quest.request.handler.domain.enums.MenuDefinition;
+import ru.zinoviev.quest.request.handler.domain.enums.MessageDefinition;
 import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
+import ru.zinoviev.quest.request.handler.domain.jpa.QuestInfo;
 import ru.zinoviev.quest.request.handler.transport.response.ResponsePublisher;
+
+import java.util.List;
 
 @Component
 public abstract class ActionDispatcher {
 
-
-    protected final ResponseFactory responseFactory;
     private final ResponsePublisher publisher;
-
     private final KeyboardRegistry keyboardRegistry;
     private final MessageRegistry messageRegistry;
 
-    public ActionDispatcher(ResponseFactory responseFactory, ResponsePublisher publisher, KeyboardRegistry keyboardRegistry, MessageRegistry messageRegistry) {
-        this.responseFactory = responseFactory;
+    public ActionDispatcher(ResponsePublisher publisher, KeyboardRegistry keyboardRegistry, MessageRegistry messageRegistry) {
         this.publisher = publisher;
         this.keyboardRegistry = keyboardRegistry;
         this.messageRegistry = messageRegistry;
@@ -37,27 +33,23 @@ public abstract class ActionDispatcher {
 
     public abstract UserRole getRole();
 
+    protected void back(CallbackRequest callbackRequest){
+        System.out.println("BACK");
+    };
+
+
     protected void sendResponse(ResponseData responseData) {
         publisher.sendResponse(responseData);
     }
 
-    protected ResponseKeyboard getKeyboard(String name){
-        return ResponseKeyboard.builder()
-                .buttons(keyboardRegistry.getKeyboard(name))
-                .keyboardType(keyboardRegistry.getKeyboardType(name))
+    protected ResponseData getDeleteMessageResponse(RequestData requestData) {
+        return DeleteMessageData.builder()
+                .userId(requestData.getTelegramId())
+                .messageId(requestData.getMessageId())
                 .build();
-    };
-
-    public void back(RequestData requestData) {
-     //   back();
-//        requestData.getPath().
     }
 
-    protected String getMessage(String messageName) {
-       return messageRegistry.getMessage(messageName);
-    }
-
-    protected ResponseData getDefaultSendMessageResponse(RequestData requestData, MenuDefinition definition){
+    protected ResponseData getSendMessageResponse(RequestData requestData, MessageDefinition definition){
         return SendMessageData.builder()
                 .userId(requestData.getTelegramId())
                 .message(definition.getMessage(messageRegistry))
@@ -65,7 +57,7 @@ public abstract class ActionDispatcher {
                 .build();
     }
 
-    protected ResponseData getDefaultEditMessageResponse(RequestData requestData, MenuDefinition definition){
+    protected ResponseData getEditMessageResponse(RequestData requestData, MessageDefinition definition){
         return EditMessageData.builder()
                 .userId(requestData.getTelegramId())
                 .messageId(requestData.getMessageId())
@@ -74,7 +66,16 @@ public abstract class ActionDispatcher {
                 .build();
     }
 
+    protected ResponseData getEditMessageResponse(RequestData requestData, MessageDefinition definition, List<QuestInfo> buttons){
+        return EditMessageData.builder()
+                .userId(requestData.getTelegramId())
+                .messageId(requestData.getMessageId())
+                .message(definition.getMessage(messageRegistry))
+                .responseKeyboard(keyboardRegistry.buildKeyboard(buttons, definition))
+                .build();
+    }
+
     public void ignore(RequestData requestData) {
-        System.out.println("Ignored: "+requestData);
+        sendResponse(getDeleteMessageResponse(requestData));
     }
 }

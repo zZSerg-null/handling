@@ -1,9 +1,6 @@
 package ru.zinoviev.quest.request.handler.domain.dto.response;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * класс обертка для кнопок клавиатур Может иметь и не иметь колбэков в зависимости

@@ -1,11 +1,13 @@
 package ru.zinoviev.quest.request.handler.domain.dto.response.utils;
 
-import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
-import ru.zinoviev.quest.request.handler.domain.dto.response.ResponseKeyboardButton;
 import ru.zinoviev.quest.request.handler.domain.dto.response.KeyboardType;
+import ru.zinoviev.quest.request.handler.domain.dto.response.ResponseKeyboard;
+import ru.zinoviev.quest.request.handler.domain.dto.response.ResponseKeyboardButton;
 import ru.zinoviev.quest.request.handler.domain.enums.CallbackNames;
+import ru.zinoviev.quest.request.handler.domain.enums.MessageDefinition;
+import ru.zinoviev.quest.request.handler.domain.jpa.QuestInfo;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,10 +48,13 @@ public class KeyboardRegistry {
 
     public List<List<ResponseKeyboardButton>> getKeyboard(String name) {
         KeyboardConfig config = keyboards.get(name);
+
         if (config == null) {
-            throw new IllegalArgumentException("Клавиатура '" + name + "' не найдена");
+            return null;
+            //throw new IllegalArgumentException("Клавиатура '" + name + "' не найдена");
         }
-        return config.getButtons();
+
+        return config.buttons();
     }
 
     public KeyboardType getKeyboardType(String name) {
@@ -57,7 +62,7 @@ public class KeyboardRegistry {
         if (config == null) {
             throw new IllegalArgumentException("Клавиатура '" + name + "' не найдена");
         }
-        return config.getType();
+        return config.type();
     }
 
     private KeyboardConfig parseKeyboardConfig(String name, Object data) {
@@ -100,10 +105,30 @@ public class KeyboardRegistry {
         }
     }
 
-    @Data
-    private static class KeyboardConfig {
-        private final String name;
-        private final KeyboardType type;
-        private final List<List<ResponseKeyboardButton>> buttons;
+    public ResponseKeyboard buildKeyboard(List<QuestInfo> buttons, MessageDefinition definition) {
+        List<List<ResponseKeyboardButton>> buttonList = new ArrayList<>();
+
+        for (QuestInfo button : buttons) {
+            List<ResponseKeyboardButton> rowButtons = new ArrayList<>();
+
+            rowButtons.add(
+                    new ResponseKeyboardButton(
+                            button.getQuestName(),
+                            CallbackNames.valueOf(definition.name()).getCallbackData() +
+                                    CallbackNames.SEPARATOR.getCallbackData() +
+                                    button.getQuestId(),
+                            null)
+            );
+
+            buttonList.add(rowButtons);
+        }
+
+        return ResponseKeyboard.builder()
+                .keyboardType(KeyboardType.INLINE)
+                .buttons(buttonList)
+                .build();
+    }
+
+    private record KeyboardConfig(String name, KeyboardType type, List<List<ResponseKeyboardButton>> buttons) {
     }
 }
