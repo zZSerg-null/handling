@@ -75,7 +75,7 @@ keyboards:
     type: "REPLY_ADD"
     rows:
       - - text: "📋 Создать квест"
-          webAppUrl: https://miniapp-six-pi.vercel.app/
+          webAppUrl: https://miniapp2-drab.vercel.app # https://miniapp-six-pi.vercel.app/
       - - text: "Завершить создание"
 
 

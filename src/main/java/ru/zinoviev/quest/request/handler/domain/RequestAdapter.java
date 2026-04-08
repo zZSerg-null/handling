@@ -1,13 +1,11 @@
 package ru.zinoviev.quest.request.handler.domain;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-import ru.zinoviev.quest.request.handler.domain.action.ActionDispatcher;
 import ru.zinoviev.quest.request.handler.domain.dto.internal.RequestData;
 import ru.zinoviev.quest.request.handler.domain.dto.internal.RequestDataMapper;
-import ru.zinoviev.quest.request.handler.domain.jpa.UserInfo;
-import ru.zinoviev.quest.request.handler.domain.jpa.service.UserRepositoryService;
+import ru.zinoviev.quest.request.handler.domain.dto.internal.UserInfo;
+import ru.zinoviev.quest.request.handler.domain.db.service.UserRepositoryService;
 import ru.zinoviev.quest.request.handler.transport.request.dto.TelegramRequest;
 
 
@@ -23,18 +21,20 @@ public class RequestAdapter {
     private final RequestDataMapper mapper;
     private final DispatcherRegistry registry;
 
-    public void adaptAndProcessRequest(TelegramRequest telegramRequest) {
-        UserInfo info = service.getOrCreateUserInfo(
-                telegramRequest.getUserId(), telegramRequest.getUserName()
-        );
+    public void adaptAndDispatchRequest(TelegramRequest telegramRequest) {
+        UserInfo userInfo = service
+                .getUserInfo(telegramRequest.getTelegramId(), telegramRequest.getUserName())
+                .orElseGet(()->service.createUser(telegramRequest.getTelegramId(), telegramRequest.getUserName()));
+
+        if (!userInfo.getUserName().equals(telegramRequest.getUserName())){
+            service.updateUser(telegramRequest.getTelegramId(), telegramRequest.getUserName());
+        }
 
         RequestData requestData = mapper.toRequestData(telegramRequest);
-        requestData.setPath(info.getPath());
-        requestData.setRole(info.getRole());
-        requestData.setUserId(info.getQuestUserId());
+        requestData.setRole(userInfo.getRole());
+        requestData.setUserId(userInfo.getUserId());
 
-        registry.get(info.getRole(), requestData.getType())
-                .dispatch(requestData);
+        registry.dispatch(requestData);
     }
 
 

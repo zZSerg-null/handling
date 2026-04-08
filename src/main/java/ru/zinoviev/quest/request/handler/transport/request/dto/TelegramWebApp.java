@@ -1,5 +1,6 @@
 package ru.zinoviev.quest.request.handler.transport.request.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -9,6 +10,7 @@ import lombok.ToString;
 @ToString
 public final class TelegramWebApp extends TelegramRequest {
 
+    @NotNull
     private final String webAppData;
 
     @Builder

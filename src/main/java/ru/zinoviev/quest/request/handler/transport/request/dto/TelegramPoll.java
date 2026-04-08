@@ -1,5 +1,6 @@
 package ru.zinoviev.quest.request.handler.transport.request.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -11,10 +12,12 @@ import java.util.List;
 public final class TelegramPoll extends TelegramRequest {
 
     private final String pollId;
+    @NotNull
     private final String question;
     private final String explanation;
     private final PollType type;
     private final Boolean allowMultipleAnswers;
+    @NotNull
     private final List<String> answers;
     private final List<Integer> correctAnswersId;
 

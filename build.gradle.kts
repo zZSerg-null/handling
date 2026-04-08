@@ -34,10 +34,15 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-amqp")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("com.fasterxml.jackson.core:jackson-databind")
+
+
+    implementation ("org.flywaydb:flyway-core:9.22.0")
+    implementation ("org.flywaydb:flyway-mysql:9.22.0")
 
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -64,6 +69,7 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly("org.junit.platform:spring-boot-starter-validation")
 }
 
 // Настройка protobuf

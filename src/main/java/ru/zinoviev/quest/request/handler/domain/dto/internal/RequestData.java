@@ -5,13 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import ru.zinoviev.quest.request.handler.domain.enums.RequestType;
-import ru.zinoviev.quest.request.handler.domain.enums.UserRole;
+import ru.zinoviev.quest.request.handler.domain.enums.BotUserRole;
 
 @Getter
 @RequiredArgsConstructor
 @ToString
 public abstract sealed class RequestData
-        permits MessageRequest, CallbackRequest, LocationRequest, PollRequest, PollAnswerRequest, WebAppRequest {
+        permits CallbackRequest, LocationRequest, MessageRequest, PollAnswerRequest, PollRequest, WebAppRequest, UnexpectedTypeRequest {
 
     private final Long telegramId;
     private final String userName;
@@ -20,7 +20,7 @@ public abstract sealed class RequestData
     @Setter
     private String path;
     @Setter
-    private UserRole role;
+    private BotUserRole role;
     @Setter
     private Long userId;
 

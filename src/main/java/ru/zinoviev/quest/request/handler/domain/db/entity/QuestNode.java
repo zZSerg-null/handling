@@ -1,0 +1,27 @@
+package ru.zinoviev.quest.request.handler.domain.db.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Getter
+@Setter
+@Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class QuestNode {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "quest_id", nullable = false)
+    @ToString.Exclude
+    private Quest quest;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "next_node_id")
+    @ToString.Exclude
+    private QuestNode nextNode;
+}

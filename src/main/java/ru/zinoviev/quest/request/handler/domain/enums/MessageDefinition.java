@@ -10,6 +10,8 @@ import ru.zinoviev.quest.request.handler.domain.dto.response.utils.MessageRegist
 @RequiredArgsConstructor
 public enum MessageDefinition {
 
+    TEST_REPLY("test_reply"),
+
     USER_MAIN_MENU("user_main_menu"),
     QUEST_MENU("quest_menu"),
     USER_QUESTS("quest_list"),

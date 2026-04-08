@@ -27,6 +27,8 @@
 #"`inline fixed-width code` " +"\n";
 
 messages:
+  test_reply: "тестовое сообщение"
+
 
 # USER MESSAGES
   user_main_menu: "*Добро пожаловать в квестовый бот!*\n\nЗдесь вы можете создавать и проходить квесты \n"

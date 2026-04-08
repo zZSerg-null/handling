@@ -1,5 +1,6 @@
 package ru.zinoviev.quest.request.handler.transport.protocol;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -13,10 +14,11 @@ public class RabbitMqListener {
     private final RequestAdapter adapter;
 
     @RabbitListener(queues = RabbitConfig.REQUEST_QUEUE)
-    public void processRequest(TelegramRequest request) {
+    public void processRequest(@Valid TelegramRequest request) {
         AnsiConsole.println("⏬ получен запрос: " + request, AnsiConsole.BrightColor.BLUE);
-        adapter.adaptAndProcessRequest(request);
+        adapter.adaptAndDispatchRequest(request);
     }
+
 
 
 }

@@ -7,6 +7,9 @@ import ru.zinoviev.quest.request.handler.transport.request.dto.*;
 public class RequestDataMapper {
 
     public RequestData toRequestData(TelegramRequest request) {
+        if (request instanceof UnknownTelegramTypeRequest) {
+            return getUnexpectedTypeRequest();
+        } else
         if (request instanceof TelegramCallback) {
             return getCallbackTypeRequest((TelegramCallback) request);
         } else if (request instanceof TelegramMessage) {
@@ -21,9 +24,13 @@ public class RequestDataMapper {
         return getPollAnswerTypeRequest((TelegramPollAnswer) request);
     }
 
+    private RequestData getUnexpectedTypeRequest() {
+        return UnexpectedTypeRequest.builder().build();
+    }
+
     private RequestData getWebAppRequest(TelegramWebApp request) {
         return WebAppRequest.builder()
-                .telegramId(request.getUserId())
+                .telegramId(request.getTelegramId())
                 .userName(request.getUserName())
                 .messageId(request.getMessageId())
                 .webAppData(request.getWebAppData())
@@ -32,7 +39,7 @@ public class RequestDataMapper {
 
     private RequestData getCallbackTypeRequest(TelegramCallback request) {
         return CallbackRequest.builder()
-                .telegramId(request.getUserId())
+                .telegramId(request.getTelegramId())
                 .messageId(request.getMessageId())
                 .userName(request.getUserName())
                 .callbackData(request.getCallbackData())
@@ -41,7 +48,7 @@ public class RequestDataMapper {
 
     private RequestData getMessageTypeRequest(TelegramMessage request) {
         return MessageRequest.builder()
-                .telegramId(request.getUserId())
+                .telegramId(request.getTelegramId())
                 .userName(request.getUserName())
                 .messageId(request.getMessageId())
                 .text(request.getText())
@@ -61,7 +68,7 @@ public class RequestDataMapper {
 
     private RequestData getLocationTypeRequest(TelegramLocation request) {
         return LocationRequest.builder()
-                .telegramId(request.getUserId())
+                .telegramId(request.getTelegramId())
                 .messageId(request.getMessageId())
                 .userName(request.getUserName())
                 .build();
@@ -69,7 +76,7 @@ public class RequestDataMapper {
 
     private RequestData getPollTypeRequest(TelegramPoll request) {
         return PollRequest.builder()
-                .telegramId(request.getUserId())
+                .telegramId(request.getTelegramId())
                 .messageId(request.getMessageId())
                 .userName(request.getUserName())
                 .pollId(request.getPollId())
@@ -84,7 +91,7 @@ public class RequestDataMapper {
 
     private RequestData getPollAnswerTypeRequest(TelegramPollAnswer request) {
         return PollAnswerRequest.builder()
-                .telegramId(request.getUserId())
+                .telegramId(request.getTelegramId())
                 .messageId(request.getMessageId())
                 .userName(request.getUserName())
                 .pollId(request.getPollId())

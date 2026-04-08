@@ -7,7 +7,7 @@ import ru.zinoviev.quest.request.handler.domain.dto.response.ResponseKeyboard;
 import ru.zinoviev.quest.request.handler.domain.dto.response.ResponseKeyboardButton;
 import ru.zinoviev.quest.request.handler.domain.enums.CallbackNames;
 import ru.zinoviev.quest.request.handler.domain.enums.MessageDefinition;
-import ru.zinoviev.quest.request.handler.domain.jpa.QuestInfo;
+import ru.zinoviev.quest.request.handler.domain.dto.internal.QuestInfo;
 
 import java.io.IOException;
 import java.io.InputStream;

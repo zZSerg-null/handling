@@ -2,12 +2,14 @@ package ru.zinoviev.quest.request.handler.transport.request.dto;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        property = "@type"
+        property = "@type",
+        defaultImpl = UnknownTelegramTypeRequest.class
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = TelegramCallback.class, name = "callback"),
@@ -19,9 +21,12 @@ import lombok.RequiredArgsConstructor;
 })
 @Getter
 @RequiredArgsConstructor
-public sealed class TelegramRequest permits TelegramCallback, TelegramLocation, TelegramMessage, TelegramPoll, TelegramPollAnswer, TelegramWebApp {
+public sealed class TelegramRequest permits TelegramCallback, TelegramLocation, TelegramMessage, TelegramPoll, TelegramPollAnswer, TelegramWebApp, UnknownTelegramTypeRequest {
 
-    private final Long userId;
+    @NotNull
+    private final Long telegramId;
+
+    @NotNull
     private final String userName;
     private final Integer messageId;
 }
