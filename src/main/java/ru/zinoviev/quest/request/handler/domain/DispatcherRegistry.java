@@ -34,7 +34,10 @@ public class DispatcherRegistry {
                 ));
 
 
-        registry.forEach((dispatchKey, basicActionHandler) -> System.out.println(dispatchKey+":"+basicActionHandler.getClass().getSimpleName()));
+        registry.forEach(
+                (key, handler) ->
+                System.out.println(key+":"+handler.getClass().getSimpleName())
+        );
     }
 
     public void dispatch(RequestData requestData){
